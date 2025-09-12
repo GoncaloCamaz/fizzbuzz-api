@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: statistics-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api-fizzbuzz:
+    build:
+      context: .
+      dockerfile: ./cmd/api-fizzbuzz/Dockerfile
+    container_name: api-fizzbuzz
+    restart: on-failure
+    ports:
+      - "8081:8081"
+    depends_on:
+      - api-statistics
+    environment:
+      STATISTICS_API_GRPC: "api-statistics:50051"
+      HTTP_SERVER: ":8081"
+      SERVICE_NAME: "api-fizzbuzz"
+    volumes:
+      - ./api-fizzbuzz:/app
+
+  api-statistics:
+    build:
+      context: .
+      dockerfile: ./cmd/api-statistics/Dockerfile
+    container_name: api-statistics
+    restart: on-failure
+    ports:
+      - "8082:8082"
+      - "50051:50051"
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: statistics-db
+      POSTGRES_HOST: postgres
+    volumes:
+      - ./api-statistics:/app
+
+  gateway:
+    build:
+      context: .
+      dockerfile: ./cmd/gateway/Dockerfile
+    container_name: gateway
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api-fizzbuzz
+      - api-statistics
+volumes:
+  postgres_data:
