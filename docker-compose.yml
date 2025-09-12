@@ -44,6 +44,9 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: statistics-db
       POSTGRES_HOST: postgres
+      HTTP_SERVER: ":8082"
+      GRPC_SERVER: ":50051"
+      SERVICE_NAME: "api-statistics"
     volumes:
       - ./api-statistics:/app
 

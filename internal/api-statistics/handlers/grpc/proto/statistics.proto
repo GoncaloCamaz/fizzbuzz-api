@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package statistics;
+
+option go_package = "proto/statistics";
+
+service StatisticsService {
+  rpc CreateStatistic(StatisticRequest) returns (StatisticResponse);
+}
+
+message StatisticRequest {
+  int64 limit = 1;
+  int64 multiplier1 = 2;
+  int64 multiplier2 = 3;
+  int64 replacement_str1 = 4;
+  int64 replacement_str2 = 5;
+}
+
+message StatisticResponse {
+  string request_id = 1;
+}

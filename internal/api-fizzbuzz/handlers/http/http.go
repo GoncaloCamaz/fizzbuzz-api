@@ -7,7 +7,6 @@ import (
 	"fizzbuzz-api/internal/api-fizzbuzz/dto/requests"
 	"fizzbuzz-api/internal/api-fizzbuzz/dto/responses"
 	"fizzbuzz-api/pkg/utils"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -33,7 +32,6 @@ func NewFizzBuzzHTTPHandler(port string) *FizzBuzzHTTPHandler {
 
 // StartService starts the FizzBuzz HTTP service
 func (h *FizzBuzzHTTPHandler) StartService() {
-	fmt.Println(h.port)
 	h.echo = echo.New()
 
 	// add http routes
