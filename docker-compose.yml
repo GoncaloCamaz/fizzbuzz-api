@@ -1,7 +1,7 @@
 services:
-  postgres:
+  database:
     image: postgres:13
-    container_name: postgres-db
+    container_name: database
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -9,7 +9,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - database_data:/var/lib/postgresql/data
 
   api-fizzbuzz:
     build:
@@ -38,12 +38,13 @@ services:
       - "8082:8082"
       - "50051:50051"
     depends_on:
-      - postgres
+      - database
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: statistics-db
-      POSTGRES_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: statistics-db
+      DB_HOST: database
+      DB_PORT: "5432"
       HTTP_SERVER: ":8082"
       GRPC_SERVER: ":50051"
       SERVICE_NAME: "api-statistics"
@@ -62,4 +63,4 @@ services:
       - api-fizzbuzz
       - api-statistics
 volumes:
-  postgres_data:
+  database_data:

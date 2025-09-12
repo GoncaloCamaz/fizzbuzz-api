@@ -16,10 +16,10 @@ This project implements the classic **FizzBuzz** as a service and adds request s
 
 - **api-statistics**
     - Stores historical data for analytics.
-    - REST endpoints under `/statistics/*` to query most requested result, top numbers, and time-series.
+    - REST endpoints under `/statistics` to query most requested result, top numbers, and time-series.
 
 - **gateway**
-- **Reverse proxy** that accepts client HTTP calls and routes them to `api-fizzbuzz` or `api-statistics`.
+  - **Reverse proxy** that accepts client HTTP calls and routes them to `api-fizzbuzz` or `api-statistics`.
 
 
 ## 🏗️ Architecture
