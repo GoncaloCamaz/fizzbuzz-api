@@ -4,7 +4,6 @@ Package app holds utilities to start and manage the application
 package app
 
 import (
-	"fizzbuzz-api/internal/api-fizzbuzz/handlers/http"
 	"fmt"
 )
 
@@ -22,10 +21,6 @@ func NewFizzBuzzService(conf *FizzBuzzServiceConfiguration) *FizzBuzzService {
 
 func (f *FizzBuzzService) StartFizzBuzzService() error {
 	fmt.Println("Starting FizzBuzzService...", f.configuration)
-
-	httpHandler := http.NewFizzBuzzHTTPHandler(f.configuration.ServiceHTTPPath)
-
-	httpHandler.StartService()
 
 	return nil
 }

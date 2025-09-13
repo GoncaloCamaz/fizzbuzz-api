@@ -5,6 +5,8 @@ package main
 
 import (
 	"fizzbuzz-api/internal/api-statistics/app"
+	"fizzbuzz-api/internal/api-statistics/handlers/grpc"
+	"fizzbuzz-api/internal/api-statistics/handlers/http"
 	"fizzbuzz-api/pkg/database"
 	"os"
 )
@@ -29,10 +31,18 @@ func main() {
 
 	dbConfig := database.NewDBConfig(dbHost, dbPort, dbUser, dbPassword, dbName)
 	serviceConfiguration := app.NewStatisticsServiceConfiguration(rpcServer, httpServer, serviceName, dbConfig)
+	db := database.NewDB(dbConfig)
 
-	statisticsService := app.NewStatisticsService(serviceConfiguration)
+	statisticsService := app.NewStatisticsService(serviceConfiguration, db)
 
-	if err := statisticsService.StartStatisticsService(); err != nil {
+	if err := statisticsService.SetupService(); err != nil {
 		panic(err)
 	}
+
+	httpHandler := http.NewStatisticsHTTPHandler(serviceConfiguration, statisticsService)
+	httpHandler.StartService()
+
+	rpcHandler := grpc.NewStatisticsGRPCHandler(rpcServer)
+	rpcHandler.StartGRPCService()
+
 }

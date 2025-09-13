@@ -3,7 +3,13 @@ Package http implements the HTTP handler for the Statistics API.
 */
 package http
 
-import "github.com/labstack/echo/v4"
+import (
+	"fizzbuzz-api/internal/api-statistics/app"
+	"fizzbuzz-api/internal/api-statistics/dto/responses"
+	"net/http"
+
+	"github.com/labstack/echo/v4"
+)
 
 // Service represents an interface for starting a service
 type Service interface {
@@ -13,13 +19,15 @@ type Service interface {
 // StatisticsHTTPHandler represents a Statistics HTTP handler
 type StatisticsHTTPHandler struct {
 	echo *echo.Echo
-	port string
+	conf *app.StatisticsServiceConfiguration
+	svc  *app.StatisticsService
 }
 
 // NewStatisticsHTTPHandler creates a new StatisticsHTTPHandler
-func NewStatisticsHTTPHandler(port string) *StatisticsHTTPHandler {
+func NewStatisticsHTTPHandler(conf *app.StatisticsServiceConfiguration, svc *app.StatisticsService) *StatisticsHTTPHandler {
 	return &StatisticsHTTPHandler{
-		port: port,
+		conf: conf,
+		svc:  svc,
 	}
 }
 
@@ -31,7 +39,7 @@ func (h *StatisticsHTTPHandler) StartService() {
 	h.addRoutes()
 
 	// start the server
-	if err := h.echo.Start(h.port); err != nil {
+	if err := h.echo.Start(h.conf.ServiceHTTPPath); err != nil {
 		panic(err)
 	}
 }
@@ -41,6 +49,14 @@ func (h *StatisticsHTTPHandler) addRoutes() {
 }
 
 func (h *StatisticsHTTPHandler) handleGetStatistics(c echo.Context) error {
-	// Placeholder implementation
-	return c.JSON(200, map[string]string{"message": "Statistics endpoint"})
+	mostFrequentRequest, count, err := h.svc.Queries.HandleGet(c.Request().Context())
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+
+	if mostFrequentRequest == nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "No statistics found"})
+	}
+
+	return c.JSON(http.StatusOK, responses.SerializeMostFrequentRequestResponse(mostFrequentRequest, count))
 }

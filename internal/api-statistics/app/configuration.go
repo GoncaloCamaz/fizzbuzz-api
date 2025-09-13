@@ -17,6 +17,6 @@ func NewStatisticsServiceConfiguration(rpcServer, httpServer, serviceName string
 		ServiceRPCPath:  rpcServer,
 		ServiceHTTPPath: httpServer,
 		ServiceName:     serviceName,
-		DB:              database.DefaultDBConfig(),
+		DB:              db,
 	}
 }

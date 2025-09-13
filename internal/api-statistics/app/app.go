@@ -6,45 +6,29 @@ package app
 import (
 	"context"
 	"fizzbuzz-api/internal/api-statistics/datamodel/migrations"
-	"fizzbuzz-api/internal/api-statistics/handlers/grpc"
-	"fizzbuzz-api/internal/api-statistics/handlers/http"
+	"fizzbuzz-api/internal/api-statistics/queries"
 	"fizzbuzz-api/pkg/database"
-	"fmt"
 
+	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/migrate"
 )
 
 // StatisticsService represents the statistics service
 type StatisticsService struct {
 	configuration *StatisticsServiceConfiguration
+	Queries       *queries.Queries
 }
 
 // NewStatisticsService returns a new StatisticsService
-func NewStatisticsService(conf *StatisticsServiceConfiguration) *StatisticsService {
+func NewStatisticsService(conf *StatisticsServiceConfiguration, db *bun.DB) *StatisticsService {
 	return &StatisticsService{
 		configuration: conf,
+		Queries:       queries.NewQueries(queries.NewStatisticQueriesHandler(db)),
 	}
 }
 
-func (s *StatisticsService) StartStatisticsService() error {
-	fmt.Println("Starting statistics service", s.configuration)
-
-	err := SetupService(s.configuration)
-	if err != nil {
-		return err
-	}
-
-	httpHandler := http.NewStatisticsHTTPHandler(s.configuration.ServiceHTTPPath)
-	httpHandler.StartService()
-
-	rpcHandler := grpc.NewStatisticsGRPCHandler(s.configuration.ServiceRPCPath)
-	rpcHandler.StartGRPCService()
-
-	return nil
-}
-
-func SetupService(conf *StatisticsServiceConfiguration) error {
-	db := database.NewDB(conf.DB)
+func (s *StatisticsService) SetupService() error {
+	db := database.NewDB(s.configuration.DB)
 
 	migrator := migrate.NewMigrator(db, migrations.Migrations, migrate.WithMarkAppliedOnSuccess(true))
 	if err := migrator.Init(context.Background()); err != nil {

@@ -4,6 +4,7 @@ Package http implements the HTTP handler for the FizzBuzz API.
 package http
 
 import (
+	"fizzbuzz-api/internal/api-fizzbuzz/app"
 	"fizzbuzz-api/internal/api-fizzbuzz/dto/requests"
 	"fizzbuzz-api/internal/api-fizzbuzz/dto/responses"
 	"fizzbuzz-api/pkg/utils"
@@ -20,13 +21,13 @@ type Service interface {
 // FizzBuzzHTTPHandler represents a FizzBuzz HTTP handler
 type FizzBuzzHTTPHandler struct {
 	echo *echo.Echo
-	port string
+	conf *app.FizzBuzzServiceConfiguration
 }
 
 // NewFizzBuzzHTTPHandler creates a new FizzBuzzHTTPHandler
-func NewFizzBuzzHTTPHandler(port string) *FizzBuzzHTTPHandler {
+func NewFizzBuzzHTTPHandler(conf *app.FizzBuzzServiceConfiguration) *FizzBuzzHTTPHandler {
 	return &FizzBuzzHTTPHandler{
-		port: port,
+		conf: conf,
 	}
 }
 
@@ -38,7 +39,7 @@ func (h *FizzBuzzHTTPHandler) StartService() {
 	h.addRoutes()
 
 	// start the server
-	if err := h.echo.Start(h.port); err != nil {
+	if err := h.echo.Start(h.conf.ServiceHTTPPath); err != nil {
 		panic(err)
 	}
 }

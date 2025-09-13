@@ -5,6 +5,7 @@ package main
 
 import (
 	"fizzbuzz-api/internal/api-fizzbuzz/app"
+	"fizzbuzz-api/internal/api-fizzbuzz/handlers/http"
 	"os"
 )
 
@@ -22,9 +23,7 @@ func main() {
 	}
 
 	serviceConfiguration := app.NewFizzBuzzServiceConfiguration(rpcServer, httpServer, serviceName)
-	fizzBuzzService := app.NewFizzBuzzService(serviceConfiguration)
 
-	if err := fizzBuzzService.StartFizzBuzzService(); err != nil {
-		panic(err)
-	}
+	httpHandler := http.NewFizzBuzzHTTPHandler(serviceConfiguration)
+	httpHandler.StartService()
 }

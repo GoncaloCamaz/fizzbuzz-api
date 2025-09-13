@@ -18,7 +18,7 @@ type MostFrequentRequestResponse struct {
 }
 
 // SerializeMostFrequentRequestResponse serializes the most frequent request and its count into a DTO
-func SerializeMostFrequentRequestResponse(data datamodel.Statistic, count int) *MostFrequentRequestResponse {
+func SerializeMostFrequentRequestResponse(data *datamodel.Statistic, count int) *MostFrequentRequestResponse {
 	return &MostFrequentRequestResponse{
 		Request: FizzBuzzRequest{
 			Limit:              data.Limit,
