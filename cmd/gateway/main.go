@@ -23,6 +23,11 @@ func main() {
 		return proxyRequest(c, target)
 	})
 
+	e.Any("/docs/*", func(c echo.Context) error {
+		target := "http://swagger-docs:3000" + c.Request().URL.Path
+		return proxyRequest(c, target)
+	})
+
 	e.Logger.Fatal(e.Start(":8080"))
 }
 

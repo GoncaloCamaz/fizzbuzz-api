@@ -1,0 +1,122 @@
+openapi: 3.0.3
+info:
+  title: FizzBuzz Platform API
+  version: "1.0.0"
+  description: |
+    Gateway that proxies FizzBuzz (REST) and Statistics (REST) services.
+    FizzBuzz sends gRPC events to Statistics for analytics.
+
+servers:
+  - url: http://localhost:8080
+    description: Gateway (recommended)
+  - url: http://localhost:8081
+    description: api-fizzbuzz direct
+  - url: http://localhost:8082
+    description: api-statistics direct
+
+tags:
+  - name: FizzBuzz
+  - name: Statistics
+
+paths:
+  /fizzbuzz/get:
+    post:
+      tags: [FizzBuzz]
+      summary: Compute FizzBuzz for a number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FizzBuzzRequest'
+            examples:
+              default:
+                value:
+                  limit: 15
+                  multiple1: 3
+                  multiple2: 5
+                  replacement_string1: "Fizz"
+                  replacement_string2: "Buzz"
+      responses:
+        '200':
+          description: FizzBuzz result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FizzBuzzResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /statistics/get:
+    get:
+      tags: [Statistics]
+      summary: Get the most requested FizzBuzz outcome
+      responses:
+        '200':
+          description: Most requested outcome
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MostFrequentRequestResponse'
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+components:
+  schemas:
+    FizzBuzzRequest:
+      type: object
+      properties:
+        limit:
+          type: integer
+          format: int64
+          example: 15
+        multiple1:
+          type: integer
+          format: int64
+          example: 3
+        multiple2:
+          type: integer
+          format: int64
+          example: 5
+        replacement_string1:
+          type: string
+          example: "Fizz"
+        replacement_string2:
+          type: string
+          example: "Buzz"
+      required: [limit, multiple1, multiple2, replacement_string1, replacement_string2]
+
+    FizzBuzzResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            type: string
+          example: ["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz"]
+      required: [result]
+
+    MostFrequentRequestResponse:
+      type: object
+      description: Most frequent FizzBuzz request and its occurrence count
+      properties:
+        request:
+          $ref: '#/components/schemas/FizzBuzzRequest'
+        count:
+          type: integer
+          example: 42
+      required: [ request, count ]
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]

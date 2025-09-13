@@ -62,5 +62,18 @@ services:
     depends_on:
       - api-fizzbuzz
       - api-statistics
+  swagger-docs:
+    build:
+      context: ./docs
+      dockerfile: Dockerfile
+    container_name: swagger-docs
+    environment:
+      - PORT=3000
+    ports:
+      - "8085:3000"
+    volumes:
+      - ./docs:/app
+    depends_on:
+      - gateway
 volumes:
   database_data:
