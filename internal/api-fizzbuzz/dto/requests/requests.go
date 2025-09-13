@@ -10,9 +10,9 @@ import (
 
 // FizzBuzzRequest represents the request payload for the FizzBuzz operation
 type FizzBuzzRequest struct {
-	Limit              int    `json:"limit"`
-	Multiple1          int    `json:"multiple1"`
-	Multiple2          int    `json:"multiple2"`
+	Limit              int64  `json:"limit"`
+	Multiple1          int64  `json:"multiple1"`
+	Multiple2          int64  `json:"multiple2"`
 	ReplacementString1 string `json:"replacement_string1"`
 	ReplacementString2 string `json:"replacement_string2"`
 }

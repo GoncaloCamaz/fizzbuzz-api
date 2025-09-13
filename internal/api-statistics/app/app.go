@@ -6,6 +6,7 @@ package app
 import (
 	"context"
 	"fizzbuzz-api/internal/api-statistics/datamodel/migrations"
+	"fizzbuzz-api/internal/api-statistics/domain/services"
 	"fizzbuzz-api/internal/api-statistics/queries"
 	"fizzbuzz-api/pkg/database"
 
@@ -16,6 +17,7 @@ import (
 // StatisticsService represents the statistics service
 type StatisticsService struct {
 	configuration *StatisticsServiceConfiguration
+	Service       *services.StatisticsService
 	Queries       *queries.Queries
 }
 
@@ -24,6 +26,7 @@ func NewStatisticsService(conf *StatisticsServiceConfiguration, db *bun.DB) *Sta
 	return &StatisticsService{
 		configuration: conf,
 		Queries:       queries.NewQueries(queries.NewStatisticQueriesHandler(db)),
+		Service:       services.NewStatisticsService(db),
 	}
 }
 

@@ -45,7 +45,7 @@ func (h *StatisticsHTTPHandler) StartService() {
 }
 
 func (h *StatisticsHTTPHandler) addRoutes() {
-	h.echo.GET("/statistics", h.handleGetStatistics)
+	h.echo.GET("/statistics/get", h.handleGetStatistics)
 }
 
 func (h *StatisticsHTTPHandler) handleGetStatistics(c echo.Context) error {

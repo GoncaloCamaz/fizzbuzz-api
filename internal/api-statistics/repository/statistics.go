@@ -41,7 +41,7 @@ func (p *PGRepo) GetStatisticByRequestKey(ctx context.Context, db bun.IDB, reque
 	err := db.NewSelect().
 		Model(&stat).
 		Where("request_key = ?", requestKey).
-		Order("created_at DESC").
+		Order("timestamp DESC").
 		Limit(1).
 		Scan(ctx)
 	if err != nil {

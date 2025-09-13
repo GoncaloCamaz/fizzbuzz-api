@@ -39,10 +39,9 @@ func main() {
 		panic(err)
 	}
 
+	rpcHandler := grpc.NewStatisticsGRPCHandler(serviceConfiguration, statisticsService)
+	go rpcHandler.StartGRPCService()
+
 	httpHandler := http.NewStatisticsHTTPHandler(serviceConfiguration, statisticsService)
 	httpHandler.StartService()
-
-	rpcHandler := grpc.NewStatisticsGRPCHandler(rpcServer)
-	rpcHandler.StartGRPCService()
-
 }
