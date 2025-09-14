@@ -8,11 +8,7 @@ info:
 
 servers:
   - url: http://localhost:8080
-    description: Gateway (recommended)
-  - url: http://localhost:8081
-    description: api-fizzbuzz direct
-  - url: http://localhost:8082
-    description: api-statistics direct
+    description: Gateway
 
 tags:
   - name: FizzBuzz
@@ -33,10 +29,10 @@ paths:
               default:
                 value:
                   limit: 15
-                  multiple1: 3
-                  multiple2: 5
-                  replacement_string1: "Fizz"
-                  replacement_string2: "Buzz"
+                  first_number: 3
+                  second_number: 5
+                  first_replacement_str: "Fizz"
+                  second_replacement_str: "Buzz"
       responses:
         '200':
           description: FizzBuzz result
@@ -77,21 +73,21 @@ components:
           type: integer
           format: int64
           example: 15
-        multiple1:
+        first_number:
           type: integer
           format: int64
           example: 3
-        multiple2:
+        second_number:
           type: integer
           format: int64
           example: 5
-        replacement_string1:
+        first_replacement_str:
           type: string
           example: "Fizz"
-        replacement_string2:
+        second_replacement_str:
           type: string
           example: "Buzz"
-      required: [limit, multiple1, multiple2, replacement_string1, replacement_string2]
+      required: [limit, first_number, second_number, first_replacement_str, second_replacement_str]
 
     FizzBuzzResponse:
       type: object

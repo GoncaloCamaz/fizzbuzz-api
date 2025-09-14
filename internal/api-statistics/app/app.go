@@ -30,6 +30,7 @@ func NewStatisticsService(conf *StatisticsServiceConfiguration, db *bun.DB) *Sta
 	}
 }
 
+// SetupService sets up the service, including database migrations
 func (s *StatisticsService) SetupService() error {
 	db := database.NewDB(s.configuration.DB)
 

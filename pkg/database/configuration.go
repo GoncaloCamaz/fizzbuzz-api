@@ -16,18 +16,6 @@ type Config struct {
 	PoolSize int
 }
 
-// DefaultDBConfig returns the default bd configuration
-func DefaultDBConfig() *Config {
-	return &Config{
-		Host:     "database",
-		Port:     "5432",
-		User:     "postgres",
-		Password: "postgres",
-		Database: "statistics-db",
-		PoolSize: 4 * runtime.GOMAXPROCS(0),
-	}
-}
-
 // NewDBConfig creates a new database configuration with custom values
 func NewDBConfig(host, port, user, password, database string) *Config {
 	return &Config{

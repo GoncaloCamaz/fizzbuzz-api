@@ -9,15 +9,16 @@ import (
 	"github.com/uptrace/bun"
 )
 
+// Statistic represents the statistics data model for database storage
 type Statistic struct {
 	bun.BaseModel `bun:"table:statistics,alias:statistics"`
 
-	Id              string    `bun:",pk,type:varchar(64)"`
-	RequestKey      string    `bun:",notnull,type:varchar(64)"`
-	MultipleOne     int64     `bun:",notnull,default:0"`
-	MultipleTwo     int64     `bun:",notnull,default:0"`
-	ReplacementStr1 string    `bun:",notnull,type:varchar(64)"`
-	ReplacementStr2 string    `bun:",notnull,type:varchar(64)"`
-	Limit           int64     `bun:",notnull,default:0"`
-	Timestamp       time.Time `bun:",notnull,default:current_timestamp"`
+	Id                   string    `bun:",pk,type:varchar(64)"`
+	RequestKey           string    `bun:",notnull,type:varchar(64)"`
+	FirstNumber          int64     `bun:",notnull,default:0"`
+	SecondNumber         int64     `bun:",notnull,default:0"`
+	FirstReplacementStr  string    `bun:",notnull,type:varchar(64)"`
+	SecondReplacementStr string    `bun:",notnull,type:varchar(64)"`
+	Limit                int64     `bun:",notnull,default:0"`
+	Timestamp            time.Time `bun:",notnull,default:current_timestamp"`
 }

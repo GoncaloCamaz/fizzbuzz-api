@@ -10,10 +10,10 @@ import (
 	"fizzbuzz-api/internal/api-fizzbuzz/dto/responses"
 	"fizzbuzz-api/internal/api-statistics/domain/entities"
 	"fizzbuzz-api/pkg/utils"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/rs/zerolog/log"
 )
 
 // Service represents an interface for starting a service
@@ -63,19 +63,19 @@ func (h *FizzBuzzHTTPHandler) handleFizzBuzz(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	fizzBuzzResult := utils.FizzBuzz(fizzBuzzDTO.Limit, fizzBuzzDTO.Multiple1, fizzBuzzDTO.Multiple2,
-		fizzBuzzDTO.ReplacementString1, fizzBuzzDTO.ReplacementString2)
+	fizzBuzzResult := utils.FizzBuzz(fizzBuzzDTO.Limit, fizzBuzzDTO.FirstNumber, fizzBuzzDTO.SecondNumber,
+		fizzBuzzDTO.FirstReplacementStr, fizzBuzzDTO.SecondReplacementStr)
 
 	go func() {
 		_, err := h.svc.Service.CreateStatisticsRecord(context.WithoutCancel(c.Request().Context()), entities.Statistics{
-			MultipleOne:     fizzBuzzDTO.Multiple1,
-			MultipleTwo:     fizzBuzzDTO.Multiple2,
-			ReplacementStr1: fizzBuzzDTO.ReplacementString1,
-			ReplacementStr2: fizzBuzzDTO.ReplacementString2,
-			Limit:           fizzBuzzDTO.Limit,
+			FirstNumber:          fizzBuzzDTO.FirstNumber,
+			SecondNumber:         fizzBuzzDTO.SecondNumber,
+			FirstReplacementStr:  fizzBuzzDTO.FirstReplacementStr,
+			SecondReplacementStr: fizzBuzzDTO.SecondReplacementStr,
+			Limit:                fizzBuzzDTO.Limit,
 		})
 		if err != nil {
-			fmt.Println(err)
+			log.Err(err).Msg("Failed to create statistics record")
 		}
 	}()
 

@@ -6,6 +6,8 @@ package http
 import (
 	"fizzbuzz-api/internal/api-statistics/app"
 	"fizzbuzz-api/internal/api-statistics/dto/responses"
+	"fizzbuzz-api/internal/api-statistics/errors"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -24,7 +26,8 @@ type StatisticsHTTPHandler struct {
 }
 
 // NewStatisticsHTTPHandler creates a new StatisticsHTTPHandler
-func NewStatisticsHTTPHandler(conf *app.StatisticsServiceConfiguration, svc *app.StatisticsService) *StatisticsHTTPHandler {
+func NewStatisticsHTTPHandler(conf *app.StatisticsServiceConfiguration,
+	svc *app.StatisticsService) *StatisticsHTTPHandler {
 	return &StatisticsHTTPHandler{
 		conf: conf,
 		svc:  svc,
@@ -55,7 +58,7 @@ func (h *StatisticsHTTPHandler) handleGetStatistics(c echo.Context) error {
 	}
 
 	if mostFrequentRequest == nil {
-		return c.JSON(http.StatusNotFound, map[string]string{"error": "No statistics found"})
+		return c.JSON(http.StatusNotFound, fmt.Errorf(errors.ErrNoStatisticsFound))
 	}
 
 	return c.JSON(http.StatusOK, responses.SerializeMostFrequentRequestResponse(mostFrequentRequest, count))

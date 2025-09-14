@@ -58,22 +58,23 @@ func (h *StatisticsGRPCHandler) StartGRPCService() {
 	}
 }
 
+// CreateStatistic handles the creation of a new statistics record.
 func (s *Server) CreateStatistic(ctx context.Context, req *pb.StatisticRequest) (*pb.StatisticResponse, error) {
 	id, err := uuid.NewUUID()
 	if err != nil {
 		return nil, err
 	}
 
-	statisticEntity := entities.Statistics{
-		ID:              id.String(),
-		MultipleOne:     req.Multiplier1,
-		MultipleTwo:     req.Multiplier2,
-		ReplacementStr1: req.ReplacementStr1,
-		ReplacementStr2: req.ReplacementStr2,
-		Limit:           req.Limit,
+	statisticEntity := &entities.Statistics{
+		ID:                   id.String(),
+		FirstNumber:          req.FirstNumber,
+		SecondNumber:         req.SecondNumber,
+		FirstReplacementStr:  req.FirstReplacementStr,
+		SecondReplacementStr: req.SecondReplacementStr,
+		Limit:                req.Limit,
 	}
 
-	err = s.svc.Service.CreateStatistics(ctx, &statisticEntity)
+	err = s.svc.Service.CreateStatistics(ctx, statisticEntity)
 	if err != nil {
 		return nil, err
 	}

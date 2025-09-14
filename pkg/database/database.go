@@ -1,3 +1,6 @@
+/*
+Package database provides a wrapper around the Bun ORM for PostgreSQL.
+*/
 package database
 
 import (

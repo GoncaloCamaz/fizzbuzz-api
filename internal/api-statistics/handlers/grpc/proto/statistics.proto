@@ -10,10 +10,10 @@ service StatisticsService {
 
 message StatisticRequest {
   int64 limit = 1;
-  int64 multiplier1 = 2;
-  int64 multiplier2 = 3;
-  string replacement_str1 = 4;
-  string replacement_str2 = 5;
+  int64 first_number = 2;
+  int64 second_number = 3;
+  string first_replacement_str = 4;
+  string second_replacement_str = 5;
 }
 
 message StatisticResponse {

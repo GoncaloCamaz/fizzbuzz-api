@@ -21,11 +21,11 @@ func NewStatisticsService(client pb.StatisticsServiceClient) *StatisticsService 
 // CreateStatisticsRecord creates a new statistics record
 func (s *StatisticsService) CreateStatisticsRecord(ctx context.Context, data entities.Statistics) (string, error) {
 	protoRequest := &pb.StatisticRequest{
-		Limit:           data.Limit,
-		Multiplier1:     data.MultipleOne,
-		Multiplier2:     data.MultipleTwo,
-		ReplacementStr1: data.ReplacementStr1,
-		ReplacementStr2: data.ReplacementStr2,
+		Limit:                data.Limit,
+		FirstNumber:          data.FirstNumber,
+		SecondNumber:         data.SecondNumber,
+		FirstReplacementStr:  data.FirstReplacementStr,
+		SecondReplacementStr: data.SecondReplacementStr,
 	}
 
 	response, err := s.rpcClient.CreateStatistic(ctx, protoRequest)

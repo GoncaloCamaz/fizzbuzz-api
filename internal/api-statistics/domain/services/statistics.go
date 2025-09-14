@@ -34,18 +34,18 @@ func (s *StatisticsService) CreateStatistics(ctx context.Context, st *entities.S
 		return nil
 	}
 
-	requestKey := fmt.Sprintf("%d-%d-%s-%s-%d", st.MultipleOne, st.MultipleTwo, st.ReplacementStr1, st.ReplacementStr2, st.Limit)
+	requestKey := fmt.Sprintf("%d-%d-%s-%s-%d", st.FirstNumber, st.SecondNumber, st.FirstReplacementStr, st.SecondReplacementStr, st.Limit)
 
 	// map entity to datamodel
 	dm := &datamodel.Statistic{
-		Id:              st.ID,
-		RequestKey:      requestKey,
-		MultipleOne:     st.MultipleOne,
-		MultipleTwo:     st.MultipleTwo,
-		ReplacementStr1: st.ReplacementStr1,
-		ReplacementStr2: st.ReplacementStr2,
-		Limit:           st.Limit,
-		Timestamp:       time.Now(),
+		Id:                   st.ID,
+		RequestKey:           requestKey,
+		FirstNumber:          st.FirstNumber,
+		SecondNumber:         st.SecondNumber,
+		FirstReplacementStr:  st.FirstReplacementStr,
+		SecondReplacementStr: st.SecondReplacementStr,
+		Limit:                st.Limit,
+		Timestamp:            time.Now(),
 	}
 
 	return s.repo.CreateStatistics(ctx, s.db, dm)

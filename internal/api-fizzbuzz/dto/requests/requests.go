@@ -10,11 +10,11 @@ import (
 
 // FizzBuzzRequest represents the request payload for the FizzBuzz operation
 type FizzBuzzRequest struct {
-	Limit              int64  `json:"limit"`
-	Multiple1          int64  `json:"multiple1"`
-	Multiple2          int64  `json:"multiple2"`
-	ReplacementString1 string `json:"replacement_string1"`
-	ReplacementString2 string `json:"replacement_string2"`
+	Limit                int64  `json:"limit"`
+	FirstNumber          int64  `json:"first_number"`
+	SecondNumber         int64  `json:"second_number"`
+	FirstReplacementStr  string `json:"first_replacement_str"`
+	SecondReplacementStr string `json:"second_replacement_str"`
 }
 
 // ValidateFizzBuzzParams validates the FizzBuzzRequest parameters
@@ -23,7 +23,7 @@ func (f FizzBuzzRequest) ValidateFizzBuzzParams() error {
 		return fmt.Errorf(errors.ErrLimitNegative)
 	}
 
-	if f.Multiple1 <= 0 || f.Multiple2 <= 0 {
+	if f.FirstNumber <= 0 || f.SecondNumber <= 0 {
 		return fmt.Errorf(errors.ErrMultipleNonPositive)
 	}
 

@@ -9,11 +9,13 @@ import (
 	"github.com/uptrace/bun"
 )
 
+// StatisticQueriesHandler handles statistic queries
 type StatisticQueriesHandler struct {
 	repo *repository.PGRepo
 	db   bun.IDB
 }
 
+// NewStatisticQueriesHandler creates a new StatisticQueriesHandler
 func NewStatisticQueriesHandler(db bun.IDB) *StatisticQueriesHandler {
 	return &StatisticQueriesHandler{
 		repo: repository.NewPGRepo(),
@@ -21,6 +23,7 @@ func NewStatisticQueriesHandler(db bun.IDB) *StatisticQueriesHandler {
 	}
 }
 
+// HandleGet retrieves the most performed request statistics
 func (s StatisticQueriesHandler) HandleGet(ctx context.Context) (*datamodel.Statistic, int, error) {
 	mostPerformedRequestKey, count := s.repo.GetMostPerformedRequestKey(ctx, s.db)
 	if mostPerformedRequestKey == "" {

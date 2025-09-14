@@ -1,3 +1,6 @@
+/*
+Package main implements an API Gateway using the Echo framework in Go.
+*/
 package main
 
 import (
